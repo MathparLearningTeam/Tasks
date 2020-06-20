@@ -9,8 +9,8 @@ import java.util.Date;
 
 @Data
 @NoArgsConstructor
-@Entity(name = "lecture_templates")
-public class LectureTemplate {
+@Entity(name = "lectures")
+public class NoAnswerTask {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,7 +24,17 @@ public class LectureTemplate {
     @Temporal(TemporalType.DATE)
     private Date creationDate;
 
-    public LectureTemplate(String text, long authorId) {
+    @JoinColumn(name = "source_id", referencedColumnName = "id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private NoAnswerTask source;
+
+    public NoAnswerTask(NoAnswerTask source, long authorId) {
+        this.text = source.getText();
+        this.authorId = authorId;
+        this.source = source;
+    }
+
+    public NoAnswerTask(String text, long authorId) {
         this.text = text;
         this.authorId = authorId;
     }
